@@ -1,7 +1,6 @@
 package com.esadbzkrt.eventmanagement.contoller;
 
 import com.esadbzkrt.eventmanagement.dto.EventDto;
-import com.esadbzkrt.eventmanagement.model.Event;
 import com.esadbzkrt.eventmanagement.service.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +18,23 @@ public class EventController {
     }
 
     @GetMapping
-    public List<Event> getAllEvents() {
-        return eventService.getAllEvents();
+    public ResponseEntity<List<EventDto>> getAllEvents() {
+        return ResponseEntity.ok(eventService.getAllEvents());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+    public ResponseEntity<EventDto> getEventById(@PathVariable Long id) {
         return ResponseEntity.ok(eventService.getEventById(id));
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
-        return eventService.createEvent(event);
+    public ResponseEntity<EventDto> createEvent(@RequestBody EventDto eventDto) {
+        return ResponseEntity.ok(eventService.createEvent(eventDto));
     }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable Long id, @RequestBody Event event) {
-        return eventService.updateEvent(id, event);
+    public ResponseEntity<EventDto> updateEvent(@PathVariable Long id, @RequestBody EventDto eventDto) {
+        return ResponseEntity.ok(eventService.updateEvent(id, eventDto));
     }
 
     @DeleteMapping("/{id}")

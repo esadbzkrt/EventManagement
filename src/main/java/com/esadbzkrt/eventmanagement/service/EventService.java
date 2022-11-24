@@ -1,44 +1,52 @@
 package com.esadbzkrt.eventmanagement.service;
 
+import com.esadbzkrt.eventmanagement.dto.EventDto;
 import com.esadbzkrt.eventmanagement.exception.EventNotFoundException;
 import com.esadbzkrt.eventmanagement.model.Event;
 import com.esadbzkrt.eventmanagement.repository.EventRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final ModelMapper modelMapper;
 
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, ModelMapper modelMapper) {
         this.eventRepository = eventRepository;
+        this.modelMapper = modelMapper;
     }
 
-
-    public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+    public List<EventDto> getAllEvents() {
+        return eventRepository.findAll().stream()
+                .map(event -> modelMapper.map(event, EventDto.class))
+                .collect(Collectors.toList());
     }
 
-    public Event getEventById(Long id) {
+    public EventDto getEventById(Long id) {
         return eventRepository.findById(id)
-                .orElseThrow(
-                        () -> new EventNotFoundException("Event not found with id: " + id));
+                .map(event -> modelMapper.map(event, EventDto.class))
+                .orElseThrow(() -> new EventNotFoundException("Event not found with id: " + id));
     }
 
-    public Event createEvent(Event event) {
-        return eventRepository.save(event);
+    public EventDto createEvent(EventDto eventDto) {
+        Event event = modelMapper.map(eventDto, Event.class);
+        return modelMapper.map(eventRepository.save(event), EventDto.class);
     }
 
-    public Event updateEvent(Long id, Event event) {
-        Event eventToUpdate = eventRepository.findById(id).orElseThrow();
-        eventToUpdate.setEventName(event.getEventName());
-        eventToUpdate.setEventStartDate(event.getEventStartDate());
-        eventToUpdate.setEventEndDate(event.getEventEndDate());
-        eventToUpdate.setEventCapacity(event.getEventCapacity());
-        eventToUpdate.setParticipantsCount(event.getParticipantsCount());
-        return eventRepository.save(eventToUpdate);
+    public EventDto updateEvent(Long id, EventDto eventDto) {
+        Event eventToUpdate = eventRepository.findById(id).orElseThrow(()->
+                new EventNotFoundException("Event not found with id: " + id));
+        eventToUpdate.setEventName(eventDto.getEventName());
+        eventToUpdate.setEventStartDate(eventDto.getEventStartDate());
+        eventToUpdate.setEventEndDate(eventDto.getEventEndDate());
+        eventToUpdate.setEventCapacity(eventDto.getEventCapacity());
+        eventToUpdate.setParticipantsCount(eventDto.getParticipantsCount());
+        return modelMapper.map(eventRepository.save(eventToUpdate), EventDto.class);
     }
 
     public void deleteEvent(Long id) {
