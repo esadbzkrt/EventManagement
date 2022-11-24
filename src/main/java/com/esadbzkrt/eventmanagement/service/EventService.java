@@ -1,5 +1,6 @@
 package com.esadbzkrt.eventmanagement.service;
 
+import com.esadbzkrt.eventmanagement.exception.EventNotFoundException;
 import com.esadbzkrt.eventmanagement.model.Event;
 import com.esadbzkrt.eventmanagement.repository.EventRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,9 @@ public class EventService {
     }
 
     public Event getEventById(Long id) {
-        return eventRepository.findById(id).orElseThrow();
+        return eventRepository.findById(id)
+                .orElseThrow(
+                        () -> new EventNotFoundException("Event not found with id: " + id));
     }
 
     public Event createEvent(Event event) {
