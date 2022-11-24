@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Data
-@AllArgsConstructor
-@RequiredArgsConstructor
-@NoArgsConstructor
 public class EventDto {
 
         private Long id;

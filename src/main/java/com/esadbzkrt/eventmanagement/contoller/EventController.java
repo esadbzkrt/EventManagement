@@ -1,7 +1,9 @@
 package com.esadbzkrt.eventmanagement.contoller;
 
+import com.esadbzkrt.eventmanagement.dto.EventDto;
 import com.esadbzkrt.eventmanagement.model.Event;
 import com.esadbzkrt.eventmanagement.service.EventService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +24,8 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public Event getEventById(@PathVariable Long id) {
-        return eventService.getEventById(id);
+    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+        return ResponseEntity.ok(eventService.getEventById(id));
     }
 
     @PostMapping
