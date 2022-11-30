@@ -39,7 +39,7 @@ public class EventService {
     }
 
     public EventDto updateEvent(Long id, EventDto eventDto) {
-        Event eventToUpdate = eventRepository.findById(id).orElseThrow(()->
+        Event eventToUpdate = eventRepository.findById(id).orElseThrow(() ->
                 new EventNotFoundException("Event not found with id: " + id));
         eventToUpdate.setEventName(eventDto.getEventName());
         eventToUpdate.setEventStartDate(eventDto.getEventStartDate());

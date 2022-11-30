@@ -3,7 +3,6 @@ package com.esadbzkrt.eventmanagement.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "events")
@@ -18,19 +17,19 @@ public class Event {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String EventName;
+    private String eventName;
 
     @Column(nullable = false)
-    private String EventStartDate;
+    private String eventStartDate;
 
     @Column(nullable = false)
-    private String EventEndDate;
+    private String eventEndDate;
 
     @Column(nullable = false)
-    private Short EventCapacity;
+    private Integer eventCapacity;
 
     @Column(nullable = false)
-    private Short ParticipantsCount;
+    private Integer participantsCount;
 
 
 }
